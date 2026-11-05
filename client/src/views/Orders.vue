@@ -75,6 +75,41 @@
         </div>
       </div>
     </div>
+    <!-- Submitted restock orders: intentionally independent of the shared filters
+         (they are warehouse/category/status/month filters for customer orders and
+         do not apply to restock submissions) and of the main table's loading/error state. -->
+    <div class="card submitted-orders">
+      <div class="card-header">
+        <h3 class="card-title">{{ t('restocking.submitted.title') }} ({{ restockOrders.length }})</h3>
+      </div>
+      <div v-if="restockLoading" class="loading">{{ t('common.loading') }}</div>
+      <div v-else-if="restockError" class="error">{{ restockError }}</div>
+      <div v-else-if="restockOrders.length === 0" class="empty-state">{{ t('restocking.submitted.empty') }}</div>
+      <div v-else class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ t('restocking.submitted.orderId') }}</th>
+              <th>{{ t('restocking.submitted.submittedAt') }}</th>
+              <th>{{ t('restocking.submitted.itemCount') }}</th>
+              <th>{{ t('restocking.submitted.totalCost') }}</th>
+              <th>{{ t('restocking.submitted.expectedDelivery') }}</th>
+              <th>{{ t('restocking.submitted.leadTime') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="ro in restockOrders" :key="ro.id">
+              <td><strong>{{ ro.id }}</strong></td>
+              <td>{{ formatDate(ro.submitted_at) }}</td>
+              <td>{{ ro.item_count }}</td>
+              <td><strong>{{ formatCurrency(ro.total_cost, currentCurrency) }}</strong></td>
+              <td>{{ formatDate(ro.expected_delivery) }}</td>
+              <td>{{ ro.lead_time_days ?? '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -83,6 +118,7 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { api } from '../api'
 import { useFilters } from '../composables/useFilters'
 import { useI18n } from '../composables/useI18n'
+import { formatCurrency } from '../utils/currency'
 
 export default {
   name: 'Orders',
@@ -95,6 +131,24 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+
+    // Submitted restock orders have their own state so a failure here
+    // cannot affect the existing orders table
+    const restockOrders = ref([])
+    const restockLoading = ref(true)
+    const restockError = ref(null)
+
+    const loadRestockOrders = async () => {
+      try {
+        restockLoading.value = true
+        restockError.value = null
+        restockOrders.value = await api.getRestockOrders()
+      } catch (err) {
+        restockError.value = t('restocking.submitted.loadFailed', { message: err.message })
+      } finally {
+        restockLoading.value = false
+      }
+    }
 
     // Use shared filters
     const {
@@ -154,6 +208,7 @@ export default {
     }
 
     onMounted(loadOrders)
+    onMounted(loadRestockOrders)
 
     return {
       t,
@@ -164,6 +219,11 @@ export default {
       getOrderStatusClass,
       formatDate,
       currencySymbol,
+      currentCurrency,
+      formatCurrency,
+      restockOrders,
+      restockLoading,
+      restockError,
       translateProductName,
       translateCustomerName
     }
@@ -274,6 +334,16 @@ export default {
 
 .item-meta {
   font-size: 0.813rem;
+  color: #64748b;
+}
+
+.submitted-orders {
+  margin-top: 1.5rem;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
   color: #64748b;
 }
 </style>

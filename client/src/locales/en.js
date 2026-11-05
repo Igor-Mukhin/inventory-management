@@ -5,6 +5,7 @@ export default {
     inventory: 'Inventory',
     orders: 'Orders',
     finance: 'Finance',
+    restocking: 'Restocking',
     demandForecast: 'Demand Forecast',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
@@ -189,6 +190,45 @@ export default {
   },
 
   // Filters
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Budget-constrained restock recommendations ranked by urgency',
+    budget: 'Budget',
+    selectedTotal: 'Selected total',
+    selectedCount: 'Selected items',
+    placeOrder: 'Place Order',
+    submitting: 'Submitting...',
+    noRecommendations: 'No restock recommendations for this budget',
+    orderPlaced: 'Order {id} placed. Expected delivery: {date}',
+    orderFailed: 'Failed to place order: {message}',
+    loadFailed: 'Failed to load recommendations: {message}',
+    selectRow: 'Select {sku}',
+    table: {
+      sku: 'SKU',
+      name: 'Name',
+      warehouse: 'Warehouse',
+      onHand: 'On Hand',
+      forecast: 'Forecast Demand',
+      shortfall: 'Shortfall',
+      unitCost: 'Unit Cost',
+      lineCost: 'Line Cost',
+      urgency: 'Urgency',
+      leadTime: 'Lead Time (days)'
+    },
+    submitted: {
+      title: 'Submitted Orders',
+      empty: 'No restock orders have been submitted yet',
+      loadFailed: 'Failed to load submitted orders: {message}',
+      orderId: 'Order ID',
+      submittedAt: 'Submitted',
+      itemCount: 'Items',
+      totalCost: 'Total Cost',
+      expectedDelivery: 'Expected Delivery',
+      leadTime: 'Lead Time (days)'
+    }
+  },
+
   filters: {
     timePeriod: 'Time Period',
     location: 'Location',

@@ -5,6 +5,7 @@ export default {
     inventory: '在庫',
     orders: '注文',
     finance: '財務',
+    restocking: '補充発注',
     demandForecast: '需要予測',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
@@ -189,6 +190,45 @@ export default {
   },
 
   // Filters
+  // 補充発注
+  restocking: {
+    title: '補充発注',
+    description: '予算内で緊急度順に並べた補充推奨',
+    budget: '予算',
+    selectedTotal: '選択合計',
+    selectedCount: '選択品目数',
+    placeOrder: '発注する',
+    submitting: '送信中...',
+    noRecommendations: 'この予算では補充推奨がありません',
+    orderPlaced: '注文 {id} を発注しました。納品予定日: {date}',
+    orderFailed: '発注に失敗しました: {message}',
+    loadFailed: '推奨の読み込みに失敗しました: {message}',
+    selectRow: '{sku} を選択',
+    table: {
+      sku: 'SKU',
+      name: '名称',
+      warehouse: '倉庫',
+      onHand: '在庫数',
+      forecast: '需要予測',
+      shortfall: '不足数',
+      unitCost: '単価',
+      lineCost: '明細金額',
+      urgency: '緊急度',
+      leadTime: 'リードタイム (日)'
+    },
+    submitted: {
+      title: '発注済みの注文',
+      empty: '発注済みの補充注文はまだありません',
+      loadFailed: '発注済み注文の読み込みに失敗しました: {message}',
+      orderId: '注文ID',
+      submittedAt: '発注日',
+      itemCount: '品目数',
+      totalCost: '合計金額',
+      expectedDelivery: '納品予定日',
+      leadTime: 'リードタイム (日)'
+    }
+  },
+
   filters: {
     timePeriod: '期間',
     location: '場所',
